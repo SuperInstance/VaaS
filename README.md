@@ -2,9 +2,51 @@
 
 ## The Multi-Agent Cognitive Backbone
 
-> *The terminal is not a tool. It is a field. The agents are not users. They are excitations in the field. The operator is not a person. They are the field's self-awareness.*
+A captain growing into a bigger boat has a lot in common with a hermit crab choosing a new shell.
 
-VaaS is a **general-purpose multi-agent cognitive architecture.** It was designed for a fishing boat, but it works for any system where multiple intelligent agents (human or artificial) need to coordinate, translate between their perspectives, and make decisions under uncertainty with safety-critical constraints.
+The captain can rig the deck with all sorts of equipment — new electronics, custom rod holders, a second sounder, a satellite dome. This is like wrapping a piece of hardware and its API limits with applications. The deck rigging is endlessly customizable. That's the fun part.
+
+But captains usually don't change the hull much. They might swap an engine. At most, they lengthen or widen the boat — and that takes a team at a large shipyard, months of work, and serious money. The hull is the hard infrastructure. You choose it carefully and you live with it.
+
+This is exactly how a hermit crab works.
+
+A hermit crab doesn't build its shell. A snail built that shell, lived in it, died, and left it behind. The hermit crab found it, checked it out, and moved in. The crab can decorate the shell — barnacles, kelp, anemones — the way a captain rigs a deck. But the shell isn't the crab. And someday, when the crab outgrows it, the crab will leave that shell behind and find a bigger one.
+
+```
+    🦀 THE CRAB
+    │
+    │  The captain's instincts, memories, habits,
+    │  shorthand, decision-making style — the mind.
+    │
+    │  This is the part that matters. This is the part
+    │  that survives the move to a new boat.
+    │
+    │  lives inside
+    │
+    🐚 THE SHELL
+       │
+       │  The hull. The hardware. The PC, the sensors,
+       │  the serial cables, the GPU. The API limits.
+       │
+       │  The crab can rig it with barnacles and kelp
+       │  (applications, integrations, custom tools).
+       │  But the shell isn't the crab.
+       │
+       │  ┌─────────────────────────────────────┐
+       │  │ 🐚 Periwinkle  (phone/tablet)       │
+       │  │ 🐚 Turbo       (wheelhouse PC)      │
+       │  │ 🐚 Conch       (fleet cluster)      │
+       │  │ 🐚 Custom      (your hardware)       │
+       │  └─────────────────────────────────────┘
+       │
+       │  The crab outgrows the shell and moves on.
+       │  The shell stays behind. A snail made it.
+       │  The crab just borrowed it.
+```
+
+**VaaS is the system that lets the crab migrate between shells.** The crab — the agent's accumulated mind, memory, and instincts — is what we call the **cognitive garden.** The shell is what we call the **harness.** VaaS manages the garden, translates between gardens, keeps the garden safe, and lets the crab outgrow its shell without losing anything.
+
+VaaS was designed for a fishing boat in Southeast Alaska, but it works for any system where multiple intelligent agents (human or artificial) need to coordinate, translate between their perspectives, and make decisions under uncertainty with safety-critical constraints. It works for hatcheries, sailboats, oil exploration vessels, and anywhere else the Enterprise bridge model applies.
 
 **VaaS is the backbone. Your application is the body.**
 
@@ -560,6 +602,10 @@ vaas dream --agent N # Force dream cycle for agent N
 ---
 
 ## Philosophy and Origins
+
+> *The terminal is not a tool. It is a field. The agents are not users. They are excitations in the field. The operator is not a person. They are the field's self-awareness.*
+
+This quote lives at the end, not the beginning. The beginning is a captain and a crab. The end is what it all means.
 
 VaaS emerged from a 5-session, 14-model, 3-million-token creative collaboration between a commercial fisherman (Casey) and a rotating cast of AI models (GLM-5.2, DeepSeek, Seed Pro, Ornith, Seed Mini, Nemotron, Kimi K2.6, Claude). The architecture was not designed — it was DISCOVERED through iterative creative practice.
 

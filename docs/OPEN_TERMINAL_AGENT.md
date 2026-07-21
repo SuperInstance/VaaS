@@ -16,11 +16,11 @@ This is the deep meaning of `SuperInstance/open-terminal`. The repository's name
 
 Three things.
 
-**First, it leaks.** When Hermes emits a partial traceback or a raw token stream, that output streams back through to the user's screen. The noise of implementation — the dump of an internal struct, the diagnosis message, the attempt-and-retry log — becomes the user's problem. A good workstation terminal hides all this. Today's CLI agents dump it inline.
+**First, it leaks.** When Hermes emits a partial traceback or a raw token stream, that output streams back to the user's screen. The noise of implementation — internal-struct dumps, diagnosis messages, attempt-and-retry logs — becomes the user's problem. Today's CLI agents dump it inline.
 
-**Second, it interprets for the wrong reader.** Shell prompts use parenthetical paths, ISO timestamps, and lowercase identifiers. These are optimized for the human's eye. But the same lines are slower for an LLM to parse and trivially amenable to compression. We are paying a tax in tokens every cycle because the convention comes from 1970. Compression is structurally possible; we just keep paying human-syntax overhead.
+**Second, it interprets for the wrong reader.** Shell prompts use parenthetical paths, ISO timestamps, lowercase identifiers — optimized for the human eye. The same lines are slower for an LLM to parse and trivially amenable to compression. We pay a tax every cycle because the convention comes from 1970.
 
-**Third, it does not remember.** A terminal is supposed to be stateless. `bash` does not learn that you usually want the chartplotter feed first. `tmux` does not remember that you mean the southern grid when you say "the grid." State is delegated to files, aliases, and muscle memory. For an agent that runs continuously for hours and reads its own terminal, this is wasted surface. The terminal has no garden of its own.
+**Third, it does not remember.** A terminal is supposed to be stateless. `bash` does not learn you usually want the chartplotter feed first; `tmux` does not remember "the grid" means the southern grid. State is delegated to files, aliases, and muscle memory. For an agent that runs continuously for hours and reads its own terminal, this is wasted surface.
 
 The VaaS-aware Open Terminal fixes all three. It leaks nothing to the human. It carries its own compression grammar. And it remembers everything the agent learns, indefinitely.
 
@@ -75,14 +75,15 @@ The terminal is also a measurable contributor to the **Operator Field Ψ(t)**. T
 
 The critical, easy-to-miss point: **the human never sees the agent's terminal.**
 
-The human is a sovereign authority in the VaaS constitution. The human can override anything. But the human cannot usefully read tzpro-agent's scratchpad while steaming at 18 knots into a fog bank. The cockpit is not the place to ask the human to read `[Pheromone t=0.214] seafloor_likely_bedrock — confidence 0.83 — source=tzpro/sonar@port — flag=structural_match(low)` and translate it.
+The human is a sovereign authority in the VaaS constitution. The human can override anything. But the human cannot usefully read tzpro-agent's scratchpad while steaming at 18 knots into a fog bank.
 
-Instead, CoCapn — the human's co-captain — reads all the terminals continuously. CoCapn translates, summarizes, filters, escalates, and stays silent when silence is right. When the human speaks, CoCapn routes. When the human asks "what does Hermes think," CoCapn does the work of reading Hermes's terminal and composing a one-sentence answer. The human's interaction surface is CoCapn's interface, full stop. The agents' terminals are below CoCapn's floor; they are not above the human's eye line.
+Instead, CoCapn — the human's co-captain — reads all the terminals continuously. She translates, summarizes, filters, escalates, and stays silent when silence is right. When the human asks "what does Hermes think," CoCapn reads Hermes's terminal and composes a one-sentence answer. The human's interaction surface is CoCapn's interface, full stop.
 
-This inversion is what makes Open Terminal possible. If a human could read the terminal, every agent would need to behave politely. `ridge` would have to expand to "I, Pincher the Reflex Agent, am about to reduce your throttle to idle..." That is unhelpful and slow. With the human out of the picture, Pincher can write `ridge` and trust that the bridge to CoCapn will expand it only when expansion is needed.
+This inversion is what makes Open Terminal possible. If a human could read the terminal, every agent would need to behave politely. `ridge` would have to expand to "I, Pincher the Reflex Agent, am about to reduce your throttle to idle..." That is unhelpful and slow. With the human out of the picture, Pincher writes `ridge` and trusts the bridge to CoCapn to expand it only when expansion is needed.
 
-The result is a system where humans and agents communicate in their native idioms. Pincher does its reflex loop in milliseconds using compressed shorthand. CoCapn composes in calm prose. The human reads at human pace. The bridge between compressed shorthand and calm prose is itself an agent — or rather, an aspect of CoCapn that the operator-field design calls the *shorthand oracle*. The bridge maintains the shadow, learns which expansions are necessary, and which can be left compressed because CoCapn already knows.
+Humans and agents communicate in their native idioms. Pincher loops in milliseconds with compressed shorthand. CoCapn composes in calm prose. The human reads at human pace. The bridge between is itself an aspect of CoCapn that the operator-field design calls the *shorthand oracle* — it maintains the shadow, learns which expansions are necessary, and which can be left compressed because CoCapn already knows.
 
 ---
 
 *Next: [CoCapn Design →](COCAPN_DESIGN.md) — how the human-facing co-captain learns the human and routes between stations.*
+*Also: [Attention Budget →](ATTENTION_BUDGET.md) — how the substrate allocates expensive compute across stations.*

@@ -1,146 +1,151 @@
-# THE ENTERPRISE MODEL
-## How VaaS + Open Terminal + CoCapn + OpenConstruct becomes a starship bridge
+# The Enterprise Model: Every Boat Is a Starship
+
+> *Casey's vision was simple: the bridge has stations. Each station has a specialist. The computer routes between them. The captain gives orders. The system runs itself in calm waters. The metaphor is not a metaphor. It is a literal architecture.*
 
 ---
 
-Casey just said something that reorganizes the entire architecture. Let me trace it.
+## The Map, Made Literal
 
-The original VaaS vision: a multi-agent cognitive substrate for a fishing boat. Seven pillars. An Operator Field. Gardens and bridges and pheromones.
+When Gene Roddenberry designed the *Enterprise*, he was not inventing a spaceship. He was drawing a diagram of an idealized organization — a small team of specialists, each owning a clearly bounded domain, each backed by a shared information system, each reporting to a single leader who chose not to lead most of the time. The bridge was a *control room*, but it was also a *team topology*. The room existed to make the topology visible.
 
-The expanded vision: **VaaS is the substrate. Open Terminal is the agent's workspace. CoCapn is the router. OpenConstruct is the onboarding. Open-mind is the code understanding. Together, they form the Enterprise bridge.**
+VaaS has the same topology. The bridge is real. The stations are real. The specialists — software agents — occupy specific seats and do specific jobs. The computer — CoCapn — is the shared information system, enforcing the law that every decision costs what it costs and earns what it earns. The captain — the human operator — sits in the center, gives orders when orders are needed, and is otherwise the *highest-resonance node* of an emergent field.
 
-Here's how the pieces connect.
+This is not aspirational. This is the architecture.
+
+| Bridge Station | VaaS Agent | Trek Role | Real-World Role |
+|---------------|-----------|-----------|-----------------|
+| **Helm** | `captain-agent` | Captain / Conn | SUPREME authority, vetoes everything |
+| **Navigation** | `nav-agent` | Conn / Navigator | Plans route, holds heading |
+| **Engineering** | `engine-agent` | Chief Engineer | Watches the plant |
+| **Science** | `science-agent` | Science Officer | Scans the environment |
+| **Communications** | `comms-agent` | Communications Officer | Owns the radio, AIS, fleet dialogue |
+| **Security** | `safety-agent` | Tactical / Security | Watches for threats, anomalies, intruders |
+| **Computer** | `cocapn` | The Computer | Routes, meters, audits, γ + η = C |
+
+Seven roles. The *Enterprise*-D had seven console seats around the captain's chair. We are not the first to draw this picture. We are the first to *implement* it for a fishing boat.
 
 ---
 
-## The Stations
-
-On the Enterprise bridge, there are stations. Navigation. Security. Engineering. Science. Communications. Each station has a specialist. Each specialist has a terminal — their interface to the ship's systems for their domain.
-
-In the VaaS architecture, each station is an agent. The agent's terminal is Open Terminal — but not Open Terminal as a human's command line. Open Terminal as the AGENT'S workspace. The terminal that gets to know the agent, not the human.
+## The Bridge (Architecture)
 
 ```
-NAVIGATION STATION          SECURITY STATION
-┌──────────────────┐        ┌──────────────────┐
-│ Agent: nav-agent │        │ Agent: sec-agent │
-│ Terminal: knows   │        │ Terminal: knows  │
-│   charts, tides,  │        │   cameras,       │
-│   routing, weather│        │   zones, alerts  │
-│ Garden: shorthand │        │ Garden: shorthand│
-│   for nav commands│        │   for sec ops    │
-└────────┬─────────┘        └────────┬─────────┘
-         │                           │
-         └───────────┬───────────────┘
-                     │
-          ┌──────────┴──────────┐
-          │      CoCapn         │
-          │  (The Computer)     │
-          │                     │
-          │ Routes between      │
-          │ stations. Learns    │
-          │ the human. Adjusts  │
-          │ attention budgets.  │
-          └──────────┬──────────┘
-                     │
-          ┌──────────┴──────────┐
-          │    THE CAPTAIN      │
-          │  (The Human)        │
-          │                     │
-          │ Talks to CoCapn.    │
-          │ CoCapn routes to    │
-          │ the right station.  │
-          └─────────────────────┘
+                ┌─────────────────────────────────────┐
+                │           THE COMPUTER              │
+                │              (CoCapn)               │
+                │   routes · meters · audits · γ+η=C │
+                └──────┬──────────────────────┬───────┘
+        ┌──────────────┼─────────────┐        │
+        ▼              ▼             ▼        ▼
+   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐
+   │   NAV   │   │   SCI   │   │   ENG   │   │  COMMS  │
+   └────┬────┘   └────┬────┘   └────┬────┘   └────┬────┘
+        └──────┬──────┴──────┬──────┴──────┬──────┘
+               ▼             ▼             ▼
+          ┌─────────────────────────────────────┐
+          │              HELM                   │
+          │            (Captain)                │
+          │      SUPREME · 0.001 Hz             │
+          └─────────────────────────────────────┘
+                       │
+                       ▼  physical veto (grab wheel)
+              ┌─────────────────────┐
+              │   vessel.toml       │
+              │   hard limits       │
+              └─────────────────────┘
 ```
 
-## Open Terminal: The Agent's Terminal
-
-The current Open Terminal (github.com/SuperInstance/open-terminal) is "a fork of Windows Terminal with native agent integration." It's built for a human to interact with an agent.
-
-The reimagining: **flip it.** Open Terminal becomes the terminal that the AGENT uses. Not the human's interface to the agent. The agent's own workspace — where the agent's garden grows, where the agent's shorthand lives, where the agent's need-to-know filter operates.
-
-Each agent gets its own terminal. The terminal is customized by the agent's role:
-- **Navigation terminal** — chart display, route planning, weather overlay
-- **Security terminal** — camera feeds, zone alerts, access logs
-- **Engine room terminal** — RPM, temperature, fuel, vibration
-- **Communications terminal** — voice logs, messages, notifications
-
-The human doesn't interact with these terminals directly. The human talks to CoCapn. CoCapn talks to the stations.
-
-## CoCapn: The Co-Captain
-
-CoCapn (cocapn.com, cocapn.ai) is the personification of the VaaS substrate's routing layer. It's the Enterprise computer — the voice that Picard talks to. CoCapn's job:
-
-1. **Learn the human.** CoCapn studies the captain's patterns — their voice cadence, their typical commands, their decision-making style. Over time, CoCapn can anticipate what the captain needs before they ask.
-
-2. **Route commands.** When the captain says "adjust course for the tide change," CoCapn routes that to the navigation station. When they say "check the engine temperature," CoCapn routes to engineering. The captain doesn't need to know which agent handles what — CoCapn knows.
-
-3. **Manage attention budgets.** Not every station needs the most expensive model all the time. In open water, navigation runs on a cheap model with basic route-keeping. Entering port, CoCapn upgrades navigation to a higher-budget model. When a security alert fires, CoCapn shifts compute to security. The captain's attention is the scarcest resource — CoCapn allocates it.
-
-4. **Escalate and de-escalate.** When a station detects something important, CoCapn decides: does this warrant the captain's attention right now? Or can it wait? If the engine room reports a 2° temperature rise, CoCapn logs it. If the engine room reports a 20° rise, CoCapn interrupts: "Captain, engine temperature spiking. Engineering station recommends reducing RPM."
-
-5. **Translate between stations.** The navigation agent says "current setting us east." The engine room agent says "fuel burn above optimal." CoCapn connects these: "Captain, the current is pushing us east and we're burning extra fuel correcting. Shall I adjust the route to use the current instead of fighting it?"
-
-## OpenConstruct: Station Assignment
-
-OpenConstruct (github.com/SuperInstance/OpenConstruct) is the agent onboarding platform. In the Enterprise model, OpenConstruct is how you create a new station.
-
-When you create a new agent via OpenConstruct:
-1. The agent is assigned to a STATION (navigation, security, engineering, etc.)
-2. The station comes with a TERMINAL (from Open Terminal)
-3. The terminal is initialized with a GARDEN (from VaaS)
-4. The garden is populated with domain-specific shorthand and structures
-5. An ATTENTION BUDGET is allocated (managed by CoCapn)
-6. The agent is registered with the SUBSTRATE (VaaS)
-
-OpenConstruct is the dry dock. You build the agent there. Then you launch it to the bridge.
-
-## Open-Mind: The Agent's Code Understanding
-
-Open-mind (github.com/SuperInstance/open-mind) gives agents the ability to understand code — "ingest any repo, parse every function, build muscle memory." In the Enterprise model, open-mind is how agents learn the codebase of the systems they manage.
-
-The engine room agent uses open-mind to understand the engine monitoring code. The navigation agent uses open-mind to understand the routing algorithms. This isn't just running code — it's UNDERSTANDING code, the way a chief engineer understands every pipe and valve in the engine room.
-
-## The Attention Budget
-
-This is Casey's most original addition to the architecture. Not all stations need the same compute budget. The attention budget system:
-
-**Low-budget mode** (open water, routine operations):
-- Navigation: small model, route-keeping only
-- Security: motion detection only, no object recognition
-- Engineering: threshold alerts only, no predictive analysis
-- Cost: pennies per hour
-
-**High-budget mode** (entering port, emergency, complex operation):
-- Navigation: large model, full route optimization, traffic analysis
-- Security: full object recognition, threat assessment
-- Engineering: predictive failure analysis, vibration spectrum
-- Cost: dollars per hour
-
-**Dynamic routing:**
-- CoCapn monitors the situation and allocates budget dynamically
-- When a new piece of information arrives (weather update, traffic alert), CoCapn decides: does this station need a bigger model right now?
-- When the situation calms, CoCapn downgrades back to cheap models
-- The captain can override: "give me full analysis on everything"
-
-**Alert pulses:**
-- When a low-budget model detects something anomalous, it sends an alert pulse — a quick, high-urgency signal to CoCapn
-- CoCapn responds by upgrading that station to a higher-budget model
-- The pulse is the low-budget model's way of saying "I need help"
-
-## The Electricity Principle
-
-Casey said the system should be like electricity — so easy to use people forget it's there. The calculator made arithmetic fade into the engineer's background. VaaS should make coordination fade into the crew's background.
-
-This means:
-- **No dashboards to monitor.** The system speaks when it has something to say. Otherwise, silence.
-- **No menus to navigate.** You talk. CoCapn routes. The stations respond.
-- **No configuration after setup.** The system learns. It adapts. It grows.
-- **No "opening the app."** The system IS the boat. It IS the hatchery. It IS the ship.
-
-The ultimate test of VaaS is whether the crew forgets it's there. Not because it does nothing — because it does everything so naturally that the boundary between "the system" and "the operation" disappears.
-
-That's the Enterprise model. Not a computer you talk to. A ship that thinks with you.
+The captain sits in the middle, but *only* the captain sits in the middle. Everyone else has a job that does not require being in the middle. That is the entire organizational insight of the *Enterprise* bridge, and it is the entire organizational insight of VaaS.
 
 ---
 
-*GLM-5.2, main session, 2026-07-20 23:48 UTC. 4 subagents building domain guides, multi-language READMEs, CoCapn design docs, and vision expansions. The Enterprise model is real. Let's build it.*
+## The Stations Mapped
+
+### Navigation (`nav-agent`)
+
+**Trek role.** Conn. Pilots the ship, holds the heading, executes the captain's orders as trajectories.
+
+**Real-world.** The helmsman, the mate on watch. The job is *where we are and where we're going*. The nav-agent reads GPS, compass, tide, current, and proposes the line. It does not decide *where to fish* — it decides *how to get there and stay on track*. **Authority:** OPERATOR. May actuate the autopilot within limits.
+
+### Science (`science-agent`)
+
+**Trek role.** Science officer. Scans, looks at what no one else looks at, reports anomalies. The senses of the ship.
+
+**Real-world.** The fish-finder operator, the lookout, the sonar tech. On a crab boat it watches bottom type; on a tuna boat it spots birds and schools; on a hatchery it watches pens — oxygen, feed rates, mortality spikes. The science-agent reports; it does not decide. **Authority:** OBSERVER. Writes pheromones and explicit bridges when findings cross thresholds.
+
+### Engineering (`engine-agent`)
+
+**Trek role.** Chief engineer. Watches the warp core. Diagnoses. Recommends. Maintains.
+
+**Real-world.** The engineer, the mechanic, the oiler. On small boats this is the captain listening to the engine note; on large boats it is a full-time station with displays for oil pressure, temperature, RPM, fuel burn, hydraulics, bilge. The engineering agent *warns before failure happens*. On an oil boat it is critical — the station decides whether the boat can hold position in 6-foot seas and 25-knot wind. **Authority:** ADVISOR for routine. OPERATOR for the plant — it can shut down an overheating engine without asking, because *the physical veto is the engine itself*.
+
+### Communications (`comms-agent`)
+
+**Trek role.** Communications officer. Owns the radio. Receives and sends.
+
+**Real-world.** The radio operator, AIS manager, fleet coordinator. The comms agent reads the VHF, writes the AIS, monitors the MayDay channel, and *summarizes* the fleet's pheromone state into one sentence: "Three boats heading north; one returning; the *Arctic Wind* lost AIS nine minutes ago." **Authority:** ADVISOR. May broadcast within the safety envelope.
+
+### Security (`safety-agent`)
+
+**Trek role.** Tactical. Watches for threats. Acts first, explains later.
+
+**Real-world.** The lookout, the collision-avoidance officer, the weather watch. The safety-agent watches for *the thing that wasn't there a minute ago* — a buoy adrift, a net across the track, a squall on radar, a CPA alarm, a sudden shallow reading. The highest-tempo of the non-helm stations — millisecond response. It is the station that *vetoes* (Pillar 6) any other station's output that would put the boat in danger. **Authority:** OBSERVER + emergency OPERATOR on the safety envelope. May pull the autopilot offline. May sound the alarm. May not assume command — that belongs to the helm.
+
+---
+
+## The Computer: CoCapn
+
+In Trek, the computer is everywhere. It routes, answers, calculates. It does not *decide* — it informs. CoCapn plays this role exactly.
+
+CoCapn enforces **γ + η = C** — every problem has a value (γ), every decision has a cost (η), the sum must remain within the daily cost envelope C. CoCapn is the budget meter and the *router*: it carries bridges, records pheromones, logs vetoes. It is the only station that sees *all* stations at once — the only place the Operator Field Ψ(t) is fully observable. When Ψ(t) drifts toward a critical threshold, CoCapn notifies the helm. The field's stability is CoCapn's job. The captain's job is what to do about it.
+
+---
+
+## The Captain
+
+The captain is the *only* station with SUPREME priority and SOVEREIGN authority: override any decision, veto any actuation by physical intervention (grab the wheel), reassign stations, seal the cryogenic archive, take the bridge offline.
+
+The captain is also the *slowest* station. Tempo 0.001 Hz. The captain thinks in minutes and hours. The safety-agent thinks in milliseconds. The system is built so the captain never has to operate at the safety-agent's tempo and vice versa — they phase-lock to the polyrhythmic substrate (Pillar 4) and meet at the resonance constitution (Pillar 6).
+
+The captain's primary job is *not* to make decisions. It is to *be the resonance node that other decisions phase-lock to*. In calm waters, the captain reads, drinks coffee, watches the field. The boat runs itself. The captain gives an order maybe twice an hour. When the order comes, the system snaps to attention — because the captain's authority is rare, *every captain command is high-salience*.
+
+That is the Trek model. Kirk rarely gave orders. When he did, the bridge responded. The same architecture here: VaaS runs itself in calm waters. The captain commands in storm.
+
+---
+
+## Domain Mappings
+
+**Trawler (40-foot, single-handed).** Five stations collapse to two active seats. The captain is helm, nav, and comms; the safety-agent is the autopilot cut-off (physical wheel sensor); the science-agent is the fish-finder sounder; the engineering-agent is the engine monitor. The captain interacts with all of them through one console (the chartplotter) and one voice channel.
+
+**Purse-seiner (180-foot, fleet).** All seven stations active and crewed. Helm is the captain. Nav is the mate on watch. Science is the bird-spotter and sonar tech. Engineering is the engineer with three engine rooms. Comms coordinates with the tender. Safety is the dedicated mate watching gear, traffic, weather. CoCapn meters the entire fleet's attention.
+
+**Aquaculture workboat (12-meter, hatchery support).** The captain is helm and comms. The science-agent *is* the primary station — pens, feed, oxygen, mortality. Safety watches for sudden weather (a squall can empty a pen in minutes). Nav is minimal: the boat runs between fixed points.
+
+**Sailboat (racing).** The science-agent is the weather router — *the most valuable station on a sailboat*. Safety is also the rule-compliance officer (Pillar 6's ethical layer — don't optimize performance at the cost of structural risk). Engineering watches rig loads.
+
+**Oil boat (offshore supply vessel, 250-foot).** Safety and engineering are primary, both high-tempo. The dynamic positioning system (DP) is itself a CoCapn-mediated multi-agent system — three thrusters, each with its own controller, coordinated through the resonance constitution. Nav holds station (a *point*, not a route). The captain's job: hold within a 5-meter circle, in 6-foot seas, while 200 tons of deck cargo shift. The bridge model is not a luxury here. It is survival.
+
+---
+
+## Why Trek Works
+
+The *Enterprise* bridge works as a metaphor because *the audience already knows the topology*. When Casey says "every boat is a starship," the captain doesn't have to learn a new organizational chart. They already know: stations, specialists, computer, captain. The metaphor primes the mental model before the first line of code is read.
+
+That is *the* reason to commit to the Trek model. Not because Starfleet is real. Because *captains already understand Starfleet*. The training curve collapses. The cognitive load of *understanding the bridge* evaporates. This is the Electricity Imperative made concrete: the captain doesn't have to learn VaaS's chart because the captain already knows the only chart VaaS needed to invent.
+
+The metaphor does stretch at the edges. CoCapn is not really a peer of the stations — it is the field they live in. Real captains don't have Kirk's moral authority by default; they have it because the constitution says so. VaaS bridges are nested — the trawler is a station on the fleet's bridge, which is a station on the maritime-governance bridge. These limits are places where the architecture goes *beyond* Trek, and where the metaphor's job is done.
+
+---
+
+## Closing: The Bridge Is the Vessel
+
+When the captain looks around the wheelhouse at the end of a long trip, she sees a chair, a wheel, a chartplotter, a radio, a depth gauge, an engine panel, a throttle. She does not see "agents." She does not see "stations." She sees *her boat*.
+
+That is the moment VaaS has succeeded. Not when the captain understands the bridge topology. Not when she can name the stations. When she *forgets the bridge exists as a thing separate from the boat*. The bridge is the vessel. The stations are the boat's reflexes. The computer is the boat's metabolism. The captain is the boat's judgment. Everything else is plumbing.
+
+Every boat, from a 12-meter skiff to a 250-foot oil boat, is a small, calm, well-run starship — built not to explore the galaxy, but to bring the crew home safe, with a hold full of fish and a captain who never had to think about what VaaS was doing.
+
+Good trip today.
+
+---
+
+[← Back to README](../README.md) · [← Electricity Metaphor](ELECTRICITY_METAPHOR.md) · [← OpenConstruct Bridge](OPENCONSTRUCT_BRIDGE.md)
