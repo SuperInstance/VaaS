@@ -495,6 +495,17 @@ SuperInstance/VaaS (you are here)
 | [Docker Guide](docs/DOCKER_GUIDE.md) | Container deployment |
 | [Glossary](docs/GLOSSARY.md) | Every term defined in plain English |
 
+### Vision Documents
+| Document | What's In It |
+|----------|-------------|
+| [THE_ENTERPRISE_MODEL](docs/THE_ENTERPRISE_MODEL.md) | How Open Terminal + CoCapn + OpenConstruct form the Enterprise bridge |
+| [THE_TWO_SIDED_MIND](docs/THE_TWO_SIDED_MIND.md) | Captain and CoCapn as parallel thinkers connected by the frontend veneer |
+| [CoCapn Design](docs/COCAPN_DESIGN.md) | The co-captain who knows you — full product spec |
+| [Attention Budget](docs/ATTENTION_BUDGET.md) | Dynamic model routing per station |
+| [Open Terminal: Agent's Terminal](docs/OPEN_TERMINAL_AGENT.md) | The terminal that learns the agent, not the human |
+| [OpenConstruct Bridge](docs/OPENCONSTRUCT_BRIDGE.md) | Agent onboarding as station assignment |
+| [The Electricity Metaphor](docs/ELECTRICITY_METAPHOR.md) | The invisibility imperative — design for forgetting |
+
 ### Analysis and Research
 | Document | What's In It |
 |----------|-------------|
